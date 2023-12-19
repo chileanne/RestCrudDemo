@@ -2,11 +2,12 @@ package cub.sys.RestCrudDemo.restcontrollers;
 
 
 import cub.sys.RestCrudDemo.entity.Student;
+import cub.sys.RestCrudDemo.exception.StudentErrorResponse;
+import cub.sys.RestCrudDemo.exception.StudentNotFoundException;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +39,23 @@ public class StudentControllers {
 //        theStudents.add(new Student("tory", "lanes"));
 //        theStudents.add(new Student("precious", "precious"));
 
+
+
         return  theStudents;
     }
 
 
     @GetMapping("/students/{studentId}")
     public  Student  getStudent(@PathVariable int studentId){
+
+        if((studentId>= theStudents.size()) || (studentId<0)){
+            throw new StudentNotFoundException("student id not found -" + studentId);
+        }
+
         return  theStudents.get(studentId);
     }
+
+
+
+
 }
